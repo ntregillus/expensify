@@ -5,6 +5,10 @@
   "author": "Nate Tregillus",
   "license": "MIT",
   "scripts": {
+    "heroku-postbuild": "yarn run build:prod",
+    "start": "node server/server.js",
+
+
     "serve": "live-server public",
     "build:dev": "webpack",
     "build:prod": "webpack -p --env production",

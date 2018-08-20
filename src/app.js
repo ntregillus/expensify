@@ -18,14 +18,6 @@ console.log('App.js is running.');
 
 
 const store = configureStore();
-store.dispatch(addExpense({description: 'Gas bill', amount:4500}));
-store.dispatch(addExpense({description: 'Water bill',  createdAt:1000}));
-store.dispatch(addExpense({description: 'Rent', amount: 109500}));
-
-const {expenses, filters} = store.getState();
-
-const filteredList = getVisibleExpenses(expenses, filters);
-console.log(store.getState());
 
 const jsx = (
     <Provider store={store}>

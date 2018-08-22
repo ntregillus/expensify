@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import AppRouter from './routers/AppRouter';
 import configureStore from './store/configureStore';
 import {Provider} from 'react-redux';
-
+import './firebase/firebase';
 
 import {addExpense } from './actions/expenses';
 import {setTextFilter} from './actions/filters';

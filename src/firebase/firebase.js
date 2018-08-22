@@ -11,35 +11,38 @@ const config = {
 
 firebase.initializeApp(config);
 
-const database = firebase.database();
+export default firebase.database();
 
-database.ref('expenses')
-  .on('value', (snapshot) => {
-    const output= [];
-    snapshot.forEach((childSnapshot)=> {
-        output.push({
-            ...childSnapshot.val(),
-            id: childSnapshot.key
-        });
-    });
+export {firebase}; 
 
-    console.log(output);
-  });
 
-database.ref('expenses').on('child_removed',
-(snapshot) => {
-    console.log(snapshot.key, snapshot.val());
-});
+// database.ref('expenses')
+//   .on('value', (snapshot) => {
+//     const output= [];
+//     snapshot.forEach((childSnapshot)=> {
+//         output.push({
+//             ...childSnapshot.val(),
+//             id: childSnapshot.key
+//         });
+//     });
 
-database.ref('expenses').on('child_changed',
-(snapshot) => {
-    console.log('child changed ', snapshot.key, snapshot.val());
-});
+//     console.log(output);
+//   });
 
-database.ref('expenses').on('child_added',
-(snapshot) => {
-    console.log('child added ', snapshot.key, snapshot.val());
-});
+// database.ref('expenses').on('child_removed',
+// (snapshot) => {
+//     console.log(snapshot.key, snapshot.val());
+// });
+
+// database.ref('expenses').on('child_changed',
+// (snapshot) => {
+//     console.log('child changed ', snapshot.key, snapshot.val());
+// });
+
+// database.ref('expenses').on('child_added',
+// (snapshot) => {
+//     console.log('child added ', snapshot.key, snapshot.val());
+// });
 
 // setTimeout(()=> {
 //     database.ref('expenses')

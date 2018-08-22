@@ -1,4 +1,10 @@
-import {addExpense, editExpense, removeExpense} from '../../actions/expenses';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import {startAddExpense, addExpense, editExpense, removeExpense} from '../../actions/expenses';
+import expenses from '../fixtures/expenses';
+
+const createMockStore = configureMockStore([thunk]);
+
 
 test('should setup removeExpsene action Object', () => {
 
@@ -22,34 +28,45 @@ test('should editExpense generate action object', () => {
 
 
 test('should setup addExpense with provided values', () => {
-    const payload = {
-        description: 'Rent',
-        amount: 12323,
-        createdAt: 1000,
-        note: 'this was last months rent'
-    }
-    
-    const actual = addExpense(payload);
+
+    const actual = addExpense(expenses[0]);
     expect(actual).toEqual({
         type: 'ADD_EXPENSE',
-        expense: { 
-            ... payload, 
-            id: expect.any(String)
-        }
+        expense: expenses[0]
     });
     
+});
+//async test case below! use done as a fucntion to mark test complete
+test('should add expense to database and store', (done) => {
+    const store = createMockStore({});
+    const expenseData = {
+        description: 'Mouse',
+        cost: 12345,
+        note: 'this is a test',
+        createdAt: 12345666
+    };
+    store.dispatch(startAddExpense(expenseData))
+    .then(() => {
+        expect(1).toBe(1);
+        done();
+    });
+
 });
 
-test('should setup default expense for addExpense', () => {
-    const actual = addExpense();
-    expect(actual).toEqual({
-        type: 'ADD_EXPENSE',
-        expense : {
-            description: '',
-            note: '',
-            amount: 0,
-            createdAt: 0,
-            id: expect.any(String)
-        }
-    });
+test('should add expense with defaults to database and store', () => {
+
 });
+
+// test('should setup default expense for addExpense', () => {
+//     const actual = addExpense();
+//     expect(actual).toEqual({
+//         type: 'ADD_EXPENSE',
+//         expense : {
+//             description: '',
+//             note: '',
+//             amount: 0,
+//             createdAt: 0,
+//             id: expect.any(String)
+//         }
+//     });
+// });

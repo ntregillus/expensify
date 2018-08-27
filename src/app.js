@@ -1,9 +1,10 @@
 //import './utils.js' ;
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Provider} from 'react-redux';
 import AppRouter from './routers/AppRouter';
 import configureStore from './store/configureStore';
-import {Provider} from 'react-redux';
+import {startSetExpenses} from './actions/expenses';
 import './firebase/firebase';
 
 import {addExpense } from './actions/expenses';
@@ -25,4 +26,8 @@ const jsx = (
     </Provider>
 );
 
-ReactDOM.render(jsx, document.getElementById('app'));
+ReactDOM.render(<p>Loading ...</p>, document.getElementById('app'));
+console.log('why this ain\'t happening?')
+store.dispatch(startSetExpenses()).then( () => {
+    ReactDOM.render(jsx, document.getElementById('app'));
+});

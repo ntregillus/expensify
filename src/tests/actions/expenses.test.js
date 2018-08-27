@@ -2,7 +2,8 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import {startAddExpense, addExpense, editExpense, removeExpense} from '../../actions/expenses';
 import expenses from '../fixtures/expenses';
-
+import database from '../../firebase/firebase';
+import moment from 'moment';
 const createMockStore = configureMockStore([thunk]);
 
 
@@ -41,19 +42,56 @@ test('should add expense to database and store', (done) => {
     const store = createMockStore({});
     const expenseData = {
         description: 'Mouse',
-        cost: 12345,
+        amount: 12345,
         note: 'this is a test',
         createdAt: 12345666
     };
     store.dispatch(startAddExpense(expenseData))
     .then(() => {
-        expect(1).toBe(1);
+        const actual = store.getActions()[0];
+        expect(actual).toEqual({
+            type: 'ADD_EXPENSE',
+            expense: {
+                ...expenseData,
+                id: expect.any(String)
+            }
+        });
+        return database.ref(`expenses/${actual.expense.id}`).once('value');   
+    }).then((snapshot) => {
+        expect(snapshot.val()).toEqual(expenseData);
         done();
     });
 
 });
 
-test('should add expense with defaults to database and store', () => {
+test('should add expense with defaults to database and store', (done) => {
+    const store = createMockStore({});
+    const expenseData = {};
+    store.dispatch(startAddExpense(expenseData))
+    .then(() => {
+        const actual = store.getActions()[0];
+        expect(actual).toEqual({
+            type: 'ADD_EXPENSE',
+            expense: {
+                id: expect.any(String),
+                note: "",
+                createdAt: 0,
+                description: '',
+                amount: 0
+            }
+        });
+        return database.ref(`expenses/${actual.expense.id}`).once('value');   
+    }).then((snapshot) => {
+        expect(snapshot.val()).toEqual({
+            note: '',
+            createdAt: 0,
+            description: '',
+            amount: 0
+        });
+        done();
+    }).catch((ex) => {
+        console.log('failed promise', ex);
+    });
 
 });
 

@@ -40,17 +40,22 @@ test('should update firebase and trigger editExpense', (done) => {
             const actualAction = store.getActions()[0];
             expect(actualAction).toEqual({
                 type: 'EDIT_EXPENSE',
-                id: id,
+                id: expensetoEdit.id,
                 updates: updates
             });
-            return database.ref(`expenses/${id}`).once('value');
+            return database.ref(`expenses/${expensetoEdit.id}`).once('value');
         }).then((snapshot) => {
+            
             const actualValue = snapshot.val();
-            expect(actualValue).toEqual({
+            let expected = {
                 ...expensetoEdit,
                 ...updates
-            });
+            };
+            delete expected.id;
+            expect(actualValue).toEqual(expected);
             done();
+        }).catch((e) => {
+            console.log('async exception: ', e);
         });
 });
 

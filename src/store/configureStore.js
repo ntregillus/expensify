@@ -1,7 +1,9 @@
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
+import thunk from 'redux-thunk';
+
 import expensesReducer from '../reducers/expenses';
 import filtersReducer from '../reducers/filters';
-import thunk from 'redux-thunk';
+import authReducer from '../reducers/auth';
 
 /// setting up fail over logic if we do not have the redux dev
 /// tools installed! if the redux tools are not installed, 
@@ -16,7 +18,8 @@ export default () => {
     const store = createStore(
         combineReducers({
             expenses: expensesReducer,
-            filters: filtersReducer
+            filters: filtersReducer,
+            auth: authReducer
         }),
         composeEnhancers(applyMiddleware(thunk))
     );

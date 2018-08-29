@@ -9,6 +9,7 @@ import CreateExpensePage from '../components/CreateExpensePage';
 import Login from '../components/Login';
 
 import PrivateRoute from './PrivateRoute';
+import AnonymousRoute from './AnonymousRoute';
 
 export const history = createHistory();
 
@@ -16,7 +17,7 @@ const AppRouter = () => (
     <Router history={history}>
         <div>
             <Switch>
-                <Route path="/" exact={true} component={Login} />
+                <AnonymousRoute path="/" exact={true} component={Login} />
                 <PrivateRoute path="/dashboard" component={ExpenseDashboardPage} />
                 <PrivateRoute path="/create" component={CreateExpensePage} />
                 <PrivateRoute path="/edit/:id" component={EditExpensePage}/> 

@@ -6,7 +6,8 @@ import {startLogout}  from '../actions/auth';
 export const Header = (props) => (
     <div><h1>Expensify</h1>
     <span>
-    <NavLink to="/dashboard" activeClassName="is-active" exact={true}>Home</NavLink> 
+    <NavLink to="/" activeClassName="is-active" exact={true}>Home</NavLink>
+    <NavLink to="/dashboard" activeClassName="is-active" exact={true}>Dashboard</NavLink> 
     <NavLink to="/create" activeClassName="is-active">Create</NavLink> 
     
     </span>

@@ -5,7 +5,8 @@ import expenses from '../fixtures/expenses';
 import database from '../../firebase/firebase';
 import moment from 'moment';
 const createMockStore = configureMockStore([thunk]);
-
+const uid = 'testUID';
+const defaultAuthState = {auth: {uid}};
 beforeEach((done) => {
     const expensesData = {};
     expenses.forEach(({id, description, note, amount, createdAt})=> {
@@ -14,7 +15,7 @@ beforeEach((done) => {
         };
     });
 
-    database.ref('expenses').set(expensesData).then(()=> {
+    database.ref(`users/${uid}/expenses`).set(expensesData).then(()=> {
         done();
     });
 
@@ -29,7 +30,7 @@ test('should setup removeExpsene action Object', () => {
 });
 
 test('should update firebase and trigger editExpense', (done) => {
-    const store = createMockStore({});
+    const store = createMockStore(defaultAuthState);
     const expensetoEdit = expenses[2];
     const updates = {
         description: expensetoEdit.description + 'new text!',
@@ -43,7 +44,7 @@ test('should update firebase and trigger editExpense', (done) => {
                 id: expensetoEdit.id,
                 updates: updates
             });
-            return database.ref(`expenses/${expensetoEdit.id}`).once('value');
+            return database.ref(`users/${uid}/expenses/${expensetoEdit.id}`).once('value');
         }).then((snapshot) => {
             
             const actualValue = snapshot.val();
@@ -81,7 +82,7 @@ test('should setup addExpense with provided values', () => {
 });
 //async test case below! use done as a fucntion to mark test complete
 test('should add expense to database and store', (done) => {
-    const store = createMockStore({});
+    const store = createMockStore(defaultAuthState);
     const expenseData = {
         description: 'Mouse',
         amount: 12345,
@@ -98,7 +99,7 @@ test('should add expense to database and store', (done) => {
                 id: expect.any(String)
             }
         });
-        return database.ref(`expenses/${actual.expense.id}`).once('value');   
+        return database.ref(`users/${uid}/expenses/${actual.expense.id}`).once('value');   
     }).then((snapshot) => {
         expect(snapshot.val()).toEqual(expenseData);
         done();
@@ -107,7 +108,7 @@ test('should add expense to database and store', (done) => {
 });
 
 test('should add expense with defaults to database and store', (done) => {
-    const store = createMockStore({});
+    const store = createMockStore(defaultAuthState);
     const expenseData = {};
     store.dispatch(startAddExpense(expenseData))
     .then(() => {
@@ -122,7 +123,7 @@ test('should add expense with defaults to database and store', (done) => {
                 amount: 0
             }
         });
-        return database.ref(`expenses/${actual.expense.id}`).once('value');   
+        return database.ref(`users/${uid}/expenses/${actual.expense.id}`).once('value');   
     }).then((snapshot) => {
         expect(snapshot.val()).toEqual({
             note: '',
@@ -146,7 +147,7 @@ test('should setup setExpense action', () =>{
 });
 
 test('should load expenses from firebase', (done) => {
-    const store = createMockStore({});
+    const store = createMockStore(defaultAuthState);
     store.dispatch(startSetExpenses()).then(() => {
         
         const actions = store.getActions();
@@ -163,15 +164,18 @@ test('should load expenses from firebase', (done) => {
 });
 
 test('should remove expense from firebase', (done) => {
-    const store = createMockStore({});
-    store.dispatch(startRemoveExpense({id: expenses[1].id})).then(()=> {
+    const store = createMockStore(defaultAuthState);
+    const idToRemove = expenses[1].id;
+    console.log('idToRemove = ', idToRemove);
+    store.dispatch(startRemoveExpense({id: idToRemove})).then(()=> {
         const action = store.getActions()[0];
+       
         expect(action).toEqual({
             type: 'REMOVE_EXPENSE',
-            id: expenses[1].id
+            id: idToRemove
         });
-        console.log('this hit?');
-        return database.ref(`expenses/${expenses[1].id}`).once('value');
+        console.log(`should have removed users/${uid}/expenses/${idToRemove}`);
+        return database.ref(`users/${uid}/expenses/${idToRemove}`).once('value');
     }).then( (snapshot)=> {
         expect(snapshot.val()).toBeNull();
         console.log('this one either?');

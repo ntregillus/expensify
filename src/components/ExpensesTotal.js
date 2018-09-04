@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import numeral from 'numeral';
 import getExpensesTotal from '../selectors/expenses-total';
 import getVisibleExpenses from '../selectors/expenses';
@@ -11,7 +12,14 @@ export const ExpensesTotal = ({expensesTotal, expensesCount}) => {
     return (
         <div className="page-header">
             <div className="content-container">
-                <h3>Viewing {count} {plural} totaling {total}</h3>
+                <h1 className="page-header__title">
+                    Viewing 
+                    <span> {count}</span> {plural} totaling 
+                    <span> {total}</span>
+                </h1>
+                <div className="page-header__actions">
+                    <Link to="/create" className="button">Add Expense</Link>
+                </div>
             </div>
         </div>);
 };

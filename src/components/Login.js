@@ -9,7 +9,7 @@ export const Login = (props) => (
       <p>
         Time for Expenses!
       </p>
-      <button className="login__button" onClick={props.startLogin} >Login with Google</button>
+      <button className="button" onClick={props.startLogin} >Login with Google</button>
     </div>
   </div>  
 );

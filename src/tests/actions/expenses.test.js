@@ -109,7 +109,7 @@ test('should add expense to database and store', (done) => {
 
 test('should add expense with defaults to database and store', (done) => {
     const store = createMockStore(defaultAuthState);
-    const expenseData = {};
+    const expenseData = {description: 'cannot be empty'};
     store.dispatch(startAddExpense(expenseData))
     .then(() => {
         const actual = store.getActions()[0];
@@ -119,7 +119,7 @@ test('should add expense with defaults to database and store', (done) => {
                 id: expect.any(String),
                 note: "",
                 createdAt: 0,
-                description: '',
+                description: 'cannot be empty',
                 amount: 0
             }
         });
@@ -128,7 +128,7 @@ test('should add expense with defaults to database and store', (done) => {
         expect(snapshot.val()).toEqual({
             note: '',
             createdAt: 0,
-            description: '',
+            description: 'cannot be empty',
             amount: 0
         });
         done();

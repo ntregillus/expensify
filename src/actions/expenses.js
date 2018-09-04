@@ -30,6 +30,8 @@ export const startAddExpense = (expenseData = {}) => {
                 id: ref.key,
                 ...newExpense
             }));
+        }).catch((e) => {
+            console.log('what happened here? ', e);
         });
     };
 };

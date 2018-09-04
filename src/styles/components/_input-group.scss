@@ -1,0 +1,19 @@
+
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: $lg-size;
+    @media (min-width: $desktop-breakpoint) {
+        flex-direction: row;
+        margin-bottom: $sm-size;
+    }
+}
+
+.input-group__item {
+    margin-bottom: $sm-size;
+    @media (min-width: $desktop-breakpoint) {
+        margin: 0 $sm-size 0 0;
+    }
+}
+

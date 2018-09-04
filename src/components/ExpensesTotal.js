@@ -8,7 +8,12 @@ export const ExpensesTotal = ({expensesTotal, expensesCount}) => {
     const count = expensesCount;
     const plural = count !== 1 ? 'expenses': 'expense';
     const total = numeral(expensesTotal).format('$0,0.00');
-    return <h3>Viewing {count} {plural} totaling {total}</h3>
+    return (
+        <div className="page-header">
+            <div className="content-container">
+                <h3>Viewing {count} {plural} totaling {total}</h3>
+            </div>
+        </div>);
 };
 
 const mapStateToProps = (state) => {

@@ -1,4 +1,8 @@
 @import './base/settings';
 @import './base/base';
 
-
+@import './components/box-layout.scss'; 
+@import './components/buttons';
+@import './components/header';
+@import './components/content-container';
+@import './components/page-header';
